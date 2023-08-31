@@ -27,7 +27,7 @@ services:
     depends_on:
       - php
     networks:
-      - traefik-proxy.yml
+      - traefik-proxy
     labels:
     #UI
       - "traefik.enable=true"
