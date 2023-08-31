@@ -4,26 +4,14 @@ services:
   php:
     build: .docker/php
     volumes:
-      - ./volumes/akaunting:/var/www/html
+      - /storage/akaunting:/var/www/html
       - ~/.composer:/var/www/.composer
       - ~/.npm:/var/www/.npm/
     restart: unless-stopped
     environment:
       - HOST_UID=${HOST_UID:-1000}
       - HOST_GID=${HOST_GID:-1000}
-      - AKAUNTING_VERSION
-      - ADM_EMAIL
-      - ADM_PASSWD
-
-      - APP_ENV
-
-      - DB_CONNECTION
-      - DB_PORT
-      - DB_HOST
-      - DB_DATABASE
-      - DB_USERNAME
-      - DB_PASSWORD
-
+      - AKAUNTING_VERSION="3"
       - XDEBUG_CONFIG
     extra_hosts:
       - host.docker.internal:host-gateway
@@ -34,18 +22,34 @@ services:
         NGINX_CONF: http
     restart: unless-stopped
     volumes:
-      - ./volumes/akaunting:/var/www/html:ro
+      - /storage/akaunting:/var/www/html:ro
     depends_on:
       - php
-    ports:
-      - 80:80
+    networks:
+      - traefik-proxy.yml
+    labels:
+    #UI
+      - "traefik.enable=true"
+      - "traefik.http.routers.comptapapa.entrypoints=web"
+      - "traefik.http.middlewares.comptapapa-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.comptapapa.middlewares=comptapapa-https-redirect"
+      - "traefik.http.routers.comptapapa-secure.entrypoints=websecure"
+      - "traefik.http.routers.comptapapa-secure.rule=Host(`comptapapa.spearheadsounds.com`)"
+      - "traefik.http.routers.comptapapa-secure.tls=true"
+      - "traefik.http.routers.comptapapa-secure.tls.certresolver=lets-encrypt"
+      - "traefik.http.routers.comptapapa-secure.service=comptapapa-secure"
+      - "traefik.http.services.comptapapa-secure.loadbalancer.server.port=80"
   mysql:
     image: mysql
     volumes:
-      - ./volumes/mysql/data:/var/lib/mysql
+      - /storage/aukaunting/mysql/data:/var/lib/mysql
       - ./volumes/mysql/dump:/docker-entrypoint-initdb.d
     ports:
       - 3306:3306
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-root}
       - MYSQL_DATABASE=${MYSQL_DATABASE:-akaunting}
+
+networks:
+  traefik-proxy:
+    external: true
