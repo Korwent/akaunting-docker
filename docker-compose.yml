@@ -1,21 +1,21 @@
 version: "3.7"
 
 services:
-  php:
-    build: .docker/php
-    volumes:
-      - /storage/akaunting:/var/www/html
-      - ~/.composer:/var/www/.composer
-      - ~/.npm:/var/www/.npm/
-    restart: unless-stopped
-    environment:
-      - HOST_UID=${HOST_UID:-1000}
-      - HOST_GID=${HOST_GID:-1000}
-      - AKAUNTING_VERSION="3"
-      - XDEBUG_CONFIG
-    extra_hosts:
-      - host.docker.internal:host-gateway
-    env_file: "stack.env"
+#  php:
+#    build: .docker/php
+#    volumes:
+#      - /storage/akaunting:/var/www/html
+#      - ~/.composer:/var/www/.composer
+#      - ~/.npm:/var/www/.npm/
+#    restart: unless-stopped
+#    environment:
+#      - HOST_UID=${HOST_UID:-1000}
+#      - HOST_GID=${HOST_GID:-1000}
+#      - AKAUNTING_VERSION="3"
+#      - XDEBUG_CONFIG
+#    extra_hosts:
+#      - host.docker.internal:host-gateway
+#    env_file: "stack.env"
   web:
     build:
       context: .docker/nginx
