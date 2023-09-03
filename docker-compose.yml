@@ -48,6 +48,7 @@ services:
     volumes:
       - /storage/akaunting/mysql/data:/var/lib/mysql
       - /storage/akaunting/mysql/dump:/docker-entrypoint-initdb.d
+      - /storage/aktaunting/mysql/my.cnf:/etc/my.cnf
     ports:
       - 3306:3306
     environment:
