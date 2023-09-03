@@ -45,7 +45,7 @@ services:
     image: mysql
     volumes:
       - /storage/akaunting/mysql/data:/var/lib/mysql
-      - ./volumes/mysql/dump:/docker-entrypoint-initdb.d
+      - /storage/akaunting/mysql/dump:/docker-entrypoint-initdb.d
     ports:
       - 3306:3306
     environment:
