@@ -26,6 +26,8 @@ services:
       - /storage/akaunting:/var/www/html
     depends_on:
       - php
+    links:
+      - php
     networks:
       - traefik-proxy
     labels:
