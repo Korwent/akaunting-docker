@@ -23,7 +23,7 @@ services:
         NGINX_CONF: http
     restart: unless-stopped
     volumes:
-      - /storage/akaunting:/var/www/html:ro
+      - /storage/akaunting:/var/www/html
     depends_on:
       - php
     networks:
