@@ -24,8 +24,8 @@ services:
     restart: unless-stopped
     volumes:
       - /storage/akaunting:/var/www/html
-    depends_on:
-      - php
+#    depends_on:
+#      - php
     networks:
       - traefik-proxy
     labels:
